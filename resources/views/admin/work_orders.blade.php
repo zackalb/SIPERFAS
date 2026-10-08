@@ -131,7 +131,7 @@
                 <!-- TOTAL WO -->
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-start justify-between">
                     <div>
-                        <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL WO</p>
+                        <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Total Laporan Masuk</p>
                         <h3 class="text-3xl font-black text-blue-900 mt-2 tracking-tight">{{ $totalWo }}</h3>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">

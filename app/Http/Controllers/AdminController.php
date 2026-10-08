@@ -103,9 +103,6 @@ class AdminController extends Controller
         $totalBudget = $budget ? $budget->total_anggaran : 50000000;
         $totalDisetujui = BudgetProposal::where('status_persetujuan', 'disetujui')->sum('estimasi_biaya');
         $budgetAbsorptionPercentage = $totalBudget > 0 ? round(($totalDisetujui / $totalBudget) * 100, 1) : 0;
-        if ($budgetAbsorptionPercentage == 0 && $totalDisetujui == 0) {
-            $budgetAbsorptionPercentage = 64.1;
-        }
 
         $percentageChange = 12;
 
@@ -258,15 +255,15 @@ class AdminController extends Controller
         // Sinyal darurat tidak dikirim ke admin, hanya ke petugas tertentu
         $hasEmergency = false;
 
-        // 2. Metrik Work Order sesuai Screenshot 1
-        $dbTotal = DamageReport::count();
-        $totalWo = $dbTotal > 0 ? $dbTotal : 142;
-        
-        $dbPending = DamageReport::whereIn('status_laporan', ['menunggu', 'darurat', 'proses', 'proses_perbaikan', 'menunggu_rab'])->count();
-        $menungguPerbaikan = $dbPending > 0 ? $dbPending : 38;
-
-        $dbDone = DamageReport::where('status_laporan', 'selesai')->count();
-        $selesaiBulanIni = $dbDone > 0 ? $dbDone : 98;
+        // 2. Metrik Work Order Riil dari Database
+        $totalWo = DamageReport::count();
+        $menungguPerbaikan = DamageReport::where('status_laporan', '!=', 'selesai')->count();
+        $selesaiBulanIni = DamageReport::where('status_laporan', 'selesai')
+            ->where(function($q) {
+                $q->whereMonth('updated_at', now()->month)
+                  ->whereYear('updated_at', now()->year)
+                  ->orWhereNull('updated_at');
+            })->count();
 
         // 3. Ambil SEMUA Laporan/WO untuk Tabel
         $allReports = DamageReport::with(['facility', 'user', 'verification.workOrder'])

@@ -12,12 +12,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('facility_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('facility_categories')) {
+            Schema::create('facility_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->unique();
+                $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+                $table->timestamps();
+            });
+        }
+
+        // Pastikan kategori teknisi di tabel categories tersedia sebelum mengisi facility_categories
+        $techCategories = [
+            1 => 'Listrik',
+            2 => 'Air',
+            3 => 'Bangunan',
+            4 => 'IT',
+            6 => 'Jaringan',
+            7 => 'Kendaraan',
+        ];
+
+        foreach ($techCategories as $id => $name) {
+            DB::table('categories')->updateOrInsert(
+                ['id' => $id],
+                ['name' => $name, 'created_at' => now(), 'updated_at' => now()]
+            );
+        }
 
         // Seed initial default categories and map to technician domain categories
         $defaults = [

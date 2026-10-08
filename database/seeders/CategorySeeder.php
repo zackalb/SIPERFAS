@@ -17,6 +17,8 @@ class CategorySeeder extends Seeder
             ['id' => 2, 'name' => 'Air'],
             ['id' => 3, 'name' => 'Bangunan'],
             ['id' => 4, 'name' => 'IT'],
+            ['id' => 6, 'name' => 'Jaringan'],
+            ['id' => 7, 'name' => 'Kendaraan'],
         ];
 
         foreach ($categories as $cat) {

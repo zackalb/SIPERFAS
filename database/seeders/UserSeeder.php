@@ -91,6 +91,30 @@ class UserSeeder extends Seeder
             ]
         );
 
+        // 5. Teknisi Jaringan
+        User::updateOrCreate(
+            ['email' => 'zaja.petugas@sekolah.com'],
+            [
+                'nama'        => 'ZAJA S.KOM',
+                'password'    => Hash::make('password123'),
+                'status'      => 'petugas',
+                'role'        => 'petugas',
+                'category_id' => 6, // Jaringan
+            ]
+        );
+
+        // 6. Teknisi Jaringan (Alternatif)
+        User::updateOrCreate(
+            ['email' => 'bayu.petugas@sekolah.com'],
+            [
+                'nama'        => 'Bayu S.T',
+                'password'    => Hash::make('password123'),
+                'status'      => 'petugas',
+                'role'        => 'petugas',
+                'category_id' => 6, // Jaringan
+            ]
+        );
+
         // Akun Admin Sarpras (Koordinator & Manajemen)
         User::updateOrCreate(
             ['email' => 'admin@sekolah.com'],
