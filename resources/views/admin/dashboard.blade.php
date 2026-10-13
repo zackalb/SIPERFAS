@@ -347,15 +347,24 @@
                             </p>
                             <div class="space-y-1 text-[11px]">
                                 <div class="flex justify-between items-center text-emerald-300 font-semibold">
-                                    <span>✓ Tepat Waktu:</span>
+                                    <span class="inline-flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        Tepat Waktu:
+                                    </span>
                                     <span>{{ $slaData['on_time_count'] }} ({{ $slaData['on_time_percent'] }}%)</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sky-300 font-semibold">
-                                    <span>⏳ Dalam Proses:</span>
+                                    <span class="inline-flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        Dalam Proses:
+                                    </span>
                                     <span>{{ $slaData['in_progress_count'] }} ({{ $slaData['in_progress_percent'] }}%)</span>
                                 </div>
                                 <div class="flex justify-between items-center text-rose-300 font-semibold">
-                                    <span>⚠️ Melewati SLA:</span>
+                                    <span class="inline-flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                        Melewati SLA:
+                                    </span>
                                     <span>{{ $slaData['overdue_count'] }} ({{ $slaData['overdue_percent'] }}%)</span>
                                 </div>
                             </div>
@@ -484,8 +493,11 @@
                                         <span>Dalam Penanganan:</span>
                                         <span class="font-bold">{{ $item['dalam_proses'] }} Kasus</span>
                                     </div>
-                                    <div class="pt-1.5 mt-1 border-t border-slate-800 text-[10px] text-slate-400 flex items-center gap-1.5">
-                                        <span>👤 Teknisi:</span>
+                                    <div class="pt-1.5 mt-1 border-t border-slate-800 text-[10px] text-slate-400 flex items-center justify-between">
+                                        <span class="inline-flex items-center gap-1 text-slate-400">
+                                            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                            Teknisi:
+                                        </span>
                                         <span class="font-semibold text-blue-300">{{ $item['teknisi'] }}</span>
                                     </div>
                                 </div>
@@ -633,11 +645,13 @@
 
                 <!-- Modal Footer Action Buttons -->
                 <div class="p-6 border-t border-slate-100 flex items-center justify-end gap-3 bg-slate-50/50">
-                    <button type="button" onclick="submitModalDecision('reject')" class="px-5 py-2.5 bg-white hover:bg-red-50 text-[#dc2626] border border-[#fca5a5] font-bold rounded-xl text-xs transition-all shadow-xs cursor-pointer">
-                        ✕ Tolak / Minta Revisi
+                    <button type="button" onclick="submitModalDecision('reject')" class="px-5 py-2.5 bg-white hover:bg-red-50 text-[#dc2626] border border-[#fca5a5] font-bold rounded-xl text-xs transition-all shadow-xs cursor-pointer inline-flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <span>Tolak / Minta Revisi</span>
                     </button>
-                    <button type="button" onclick="submitModalDecision('approve')" class="px-5 py-2.5 bg-[#10b981] hover:bg-[#059669] text-white font-bold rounded-xl text-xs transition-all shadow-xs cursor-pointer flex items-center gap-1.5">
-                        <span>✓ Setujui (Approve)</span>
+                    <button type="button" onclick="submitModalDecision('approve')" class="px-5 py-2.5 bg-[#10b981] hover:bg-[#059669] text-white font-bold rounded-xl text-xs transition-all shadow-xs cursor-pointer inline-flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <span>Setujui (Approve)</span>
                     </button>
                 </div>
             </form>

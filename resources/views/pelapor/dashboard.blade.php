@@ -50,9 +50,14 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span>Lapor Kerusakan</span>
                 </a>
-                <a href="{{ route('pelapor.tickets') }}" class="flex items-center space-x-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
-                    <span>Tiket Saya</span>
+                <a href="{{ route('pelapor.tickets') }}" class="flex items-center justify-between px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
+                        <span>Tiket / WO</span>
+                    </div>
+                    @if(($ongoingCount ?? 0) > 0)
+                        <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full">{{ $ongoingCount }}</span>
+                    @endif
                 </a>
             </nav>
         </div>
@@ -277,41 +282,86 @@
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div>
-                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Nama Pelapor</label>
-                                        <input type="text" value="{{ $user->nama }}" readonly class="w-full bg-blue-50/50 border-none rounded-xl py-3 px-4 text-sm text-blue-900 font-medium focus:ring-0">
+                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5 flex items-center justify-between">
+                                            <span>Nama Pelapor</span>
+                                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 {{ (str_contains(strtolower($user->nama ?? ''), 'guru') || str_contains(strtolower($user->email ?? ''), 'guru')) ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
+                                                @if(str_contains(strtolower($user->nama ?? ''), 'guru') || str_contains(strtolower($user->email ?? ''), 'guru'))
+                                                    <svg class="w-3.5 h-3.5 text-purple-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v5m4-5v5m4-5v5M3 4h18M4 4h16v9H4V4zm4 15h8"></path></svg>
+                                                    <span>Guru Sekolah</span>
+                                                @else
+                                                    <svg class="w-3.5 h-3.5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                                                    <span>Siswa</span>
+                                                @endif
+                                            </span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                            </div>
+                                            <input type="text" name="nama_pelapor" value="{{ $user->nama }}" readonly class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-sm text-slate-800 font-semibold focus:ring-0">
+                                        </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Tingkat Urgensi <span class="text-red-500">*</span></label>
-                                        <div class="relative">
-                                            <select name="tingkat_urgensi" required class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
-                                                <option value="" disabled selected>Pilih tingkat urgensi</option>
-                                                <option value="rendah">Rendah (Kerusakan ringan / masih bisa digunakan normal)</option>
-                                                <option value="sedang">Sedang (Masih berfungsi tapi bermasalah / mengganggu kenyamanan)</option>
-                                                <option value="tinggi">Tinggi (Pecah, mati total, atau tidak bisa digunakan lagi)</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
-                                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                            </div>
+                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Tingkat Urgensi Kerusakan <span class="text-red-500">*</span></label>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <!-- Rendah -->
+                                            <label class="urgency-option cursor-pointer border-2 border-slate-200 rounded-xl p-2.5 hover:border-emerald-400 transition-all bg-white relative block text-center has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50/50 has-[:checked]:shadow-xs">
+                                                <input type="radio" name="tingkat_urgensi" value="rendah" class="sr-only" onchange="onUrgencySelected('rendah')">
+                                                <span class="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-700">
+                                                    <svg class="w-2.5 h-2.5 text-emerald-500 fill-current" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5"/></svg>
+                                                    <span>Rendah</span>
+                                                </span>
+                                                <span class="block text-[10px] text-slate-500 mt-0.5 font-medium leading-tight">Ringan (4 Tahap)</span>
+                                            </label>
+
+                                            <!-- Sedang -->
+                                            <label class="urgency-option cursor-pointer border-2 border-slate-200 rounded-xl p-2.5 hover:border-amber-400 transition-all bg-white relative block text-center has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/50 has-[:checked]:shadow-xs">
+                                                <input type="radio" name="tingkat_urgensi" value="sedang" checked class="sr-only" onchange="onUrgencySelected('sedang')">
+                                                <span class="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-amber-700">
+                                                    <svg class="w-2.5 h-2.5 text-amber-500 fill-current" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5"/></svg>
+                                                    <span>Sedang</span>
+                                                </span>
+                                                <span class="block text-[10px] text-slate-500 mt-0.5 font-medium leading-tight">Sedang (4 Tahap)</span>
+                                            </label>
+
+                                            <!-- Tinggi -->
+                                            <label class="urgency-option cursor-pointer border-2 border-slate-200 rounded-xl p-2.5 hover:border-rose-400 transition-all bg-white relative block text-center has-[:checked]:border-rose-500 has-[:checked]:bg-rose-50/50 has-[:checked]:shadow-xs">
+                                                <input type="radio" name="tingkat_urgensi" value="tinggi" class="sr-only" onchange="onUrgencySelected('tinggi')">
+                                                <span class="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-rose-700">
+                                                    <svg class="w-2.5 h-2.5 text-rose-500 fill-current" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5"/></svg>
+                                                    <span>Tinggi</span>
+                                                </span>
+                                                <span class="block text-[10px] text-rose-600 mt-0.5 font-extrabold leading-tight">RAB (5 Tahap)</span>
+                                            </label>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- Urgency Indicator Banner -->
+                                <div id="urgency-indicator-banner" class="p-3 bg-amber-50/90 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start gap-2.5 transition-all">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500 mt-1 shrink-0"></span>
+                                    <div>
+                                        <p class="font-bold leading-tight" id="urgency-indicator-title">Urgensi Sedang (Alur 4 Tahapan Tracking)</p>
+                                        <p class="text-[11px] text-amber-800 mt-0.5 leading-snug" id="urgency-indicator-desc">Fasilitas mengalami gangguan sebagian. Penanganan langsung dikerjakan oleh teknisi di lapangan tanpa syarat RAB.</p>
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div>
-                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Pilih Teknisi / Bidang Keahlian <span class="text-red-500">*</span></label>
+                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Pilih Apa yang Diperbaiki (Jobdesk Teknisi) <span class="text-red-500">*</span></label>
                                         <div class="relative">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
                                             </div>
-                                            <select name="technician_id" id="form-technician" required onchange="onFormTechnicianChange(this)" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer">
-                                                <option value="" disabled selected>Pilih Teknisi Terlebih Dahulu...</option>
+                                            <select name="technician_id" id="form-technician" required onchange="onFormTechnicianChange(this)" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer">
+                                                <option value="" disabled selected>Pilih Bidang / Teknisi...</option>
                                                 @foreach($emergencyTechnicians as $tech)
                                                     @php
                                                         $cleanName = trim(preg_replace('/\s*\([^)]*Teknisi[^)]*\)/i', '', $tech->nama));
                                                         $catName = $tech->category->name ?? 'Umum';
                                                     @endphp
                                                     <option value="{{ $tech->id_user }}" data-category-id="{{ $tech->category_id }}" data-category-name="{{ $catName }}">
-                                                        {{ $cleanName }} (Teknisi {{ $catName }})
+                                                        Teknisi {{ $catName }} ({{ $cleanName }})
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -322,12 +372,12 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Lokasi Fasilitas & Ruangan <span class="text-red-500">*</span></label>
+                                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Lokasi Fasilitas & Ruangan Kejadian <span class="text-red-500">*</span></label>
                                         <div class="relative">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                                 <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                             </div>
-                                            <select name="id_fasilitas" id="form-facility" required onchange="onFormFacilityChange(this)" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer">
+                                            <select name="id_fasilitas" id="form-facility" required onchange="onFormFacilityChange(this)" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer">
                                                 <option value="" disabled selected>Pilih Lokasi Fasilitas & Ruangan...</option>
                                                 @foreach($facilities as $fac)
                                                     <option value="{{ $fac->id_fasilitas }}" data-category-id="{{ $fac->category_id }}">
@@ -343,8 +393,16 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Deskripsi Masalah</label>
-                                    <textarea name="deskripsi_kerusakan" rows="4" required class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" placeholder="Jelaskan detail masalah yang terjadi..."></textarea>
+                                    <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Keluhan / Deskripsi Kerusakan <span class="text-red-500">*</span></label>
+                                    <textarea name="deskripsi_kerusakan" rows="3" required class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" placeholder="Jelaskan detail keluhan atau masalah fasilitas yang Anda temui..."></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[13px] font-bold text-gray-700 mb-1.5 flex items-center justify-between">
+                                        <span>Catatan Tambahan untuk Petugas (Opsional)</span>
+                                        <span class="text-[11px] text-slate-400 font-normal">Contoh: Di dekat pintu belakang, stop kontak longgar</span>
+                                    </label>
+                                    <input type="text" name="catatan_tambahan" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-4 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" placeholder="Tambahkan catatan lokasi spesifik atau instruksi penanganan...">
                                 </div>
 
                                 <div>
@@ -653,6 +711,9 @@
                             <span class="text-[11px] text-slate-500 font-medium" id="modal-tracking-summary">Diperbarui otomatis oleh sistem</span>
                         </div>
 
+                        <!-- Flow Distinction Banner (4 Tahap vs 5 Tahap RAB) -->
+                        <div id="modal-flow-banner" class="mb-4"></div>
+
                         <!-- 4 or 5-Stage Stepper Grid -->
                         <div id="tracking-stepper-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 relative">
                             
@@ -713,6 +774,33 @@
                                 <span class="text-[10px] text-slate-400 font-semibold block" id="step-4-time">-</span>
                             </div>
 
+                        </div>
+
+                        <!-- RAB Status & Breakdown Card (Khusus Urgensi Tinggi) -->
+                        <div id="modal-rab-detail-box" class="mt-4 pt-4 border-t border-slate-100 hidden">
+                            <div class="p-4 rounded-2xl bg-purple-50/50 border border-purple-200/70">
+                                <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center text-[10px] font-black shadow-xs">RAB</span>
+                                        <h5 class="text-xs font-bold text-purple-950">Pengajuan Anggaran Biaya (RAB) ke Admin Sarpras</h5>
+                                    </div>
+                                    <span id="rab-approval-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold"></span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs mt-3">
+                                    <div class="bg-white/90 p-3 rounded-xl border border-purple-100 shadow-2xs">
+                                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block">Estimasi Biaya Diajukan</span>
+                                        <span id="rab-cost-amount" class="text-sm font-extrabold text-purple-900 mt-0.5 block">-</span>
+                                    </div>
+                                    <div class="bg-white/90 p-3 rounded-xl border border-purple-100 shadow-2xs">
+                                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block">Status Verifikasi Sarpras</span>
+                                        <span id="rab-admin-status" class="font-bold text-slate-800 text-xs mt-0.5 block">-</span>
+                                    </div>
+                                </div>
+                                <div id="rab-notes-container" class="mt-2.5 bg-white/90 p-3 rounded-xl border border-purple-100 text-xs shadow-2xs">
+                                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block mb-1">Catatan Persetujuan / Revisi Admin Sarpras</span>
+                                    <p id="rab-notes-text" class="text-slate-700 font-semibold leading-relaxed text-xs">-</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1093,11 +1181,55 @@
                 const urgency = (ticket.tingkat_urgensi || '').toLowerCase();
                 const proposal = ticket.verification?.budget_proposal || ticket.verification?.budgetProposal;
                 const isHighUrgency = (urgency === 'tinggi') || !!proposal;
+                const rabCost = proposal?.estimasi_biaya || proposal?.total_anggaran;
 
                 const grid = document.getElementById('tracking-stepper-grid');
                 const stepRabCard = document.getElementById('step-rab-card');
                 const step3Badge = document.getElementById('step-3-badge');
                 const step4Badge = document.getElementById('step-4-badge');
+
+                // Flow banner & Summary Header
+                const bannerEl = document.getElementById('modal-flow-banner');
+                const summaryEl = document.getElementById('modal-tracking-summary');
+                if (bannerEl) {
+                    if (isHighUrgency) {
+                        bannerEl.innerHTML = `
+                            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200/80 flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 text-sm font-bold shadow-xs">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </div>
+                                <div class="flex-1 text-xs">
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="font-extrabold text-purple-900">Alur Sistem 5 Tahap (Urgensi Tinggi)</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-200 text-purple-800">Butuh Pengajuan Biaya RAB</span>
+                                    </div>
+                                    <p class="text-purple-950/80 text-[11px] leading-relaxed">
+                                        Kerusakan tingkat <strong>Tinggi</strong> memerlukan inspeksi teknisi dan pengajuan <strong>Rancangan Anggaran Biaya (RAB)</strong> ke Admin Sarpras. Pengerjaan fisik lapangan baru dimulai setelah admin menyetujui RAB (atau revisi jika ditolak).
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                        if (summaryEl) summaryEl.textContent = 'Sistem 5 Tahap (Dengan Validasi & Persetujuan RAB Sarpras)';
+                    } else {
+                        bannerEl.innerHTML = `
+                            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200/80 flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 text-sm font-bold shadow-xs">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <div class="flex-1 text-xs">
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="font-extrabold text-blue-900">Alur Sistem 4 Tahap (Urgensi Rendah & Sedang)</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Eksekusi Langsung</span>
+                                    </div>
+                                    <p class="text-blue-950/80 text-[11px] leading-relaxed">
+                                        Kerusakan tingkat <strong>Rendah / Sedang</strong> dapat langsung dikerjakan oleh petugas teknisi terkait tanpa memerlukan pengajuan RAB khusus ke Admin Sarpras.
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                        if (summaryEl) summaryEl.textContent = 'Sistem 4 Tahap (Penanganan Cepat Langsung Tanpa RAB)';
+                    }
+                }
 
                 // Sesuaikan kolom grid & nomor tahap berdasarkan urgensi
                 if (grid) {
@@ -1128,10 +1260,10 @@
                     step1Icon.className = 'w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold bg-emerald-100 text-emerald-700';
                     step1Icon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>`;
                 }
-                if (step1Desc) step1Desc.textContent = 'Laporan berhasil dibuat';
+                if (step1Desc) step1Desc.textContent = isHighUrgency ? 'Laporan kerusakan berat terkirim' : 'Laporan berhasil dibuat';
                 if (step1Time) step1Time.textContent = formatDateTimeID(ticket.created_at || ticket.tanggal_waktu) || 'Terkirim';
 
-                // 2. Step 2: Dibaca Teknisi
+                // 2. Step 2: Dibaca / Diinspeksi Teknisi
                 const step2Card = document.getElementById('step-2-card');
                 const step2Icon = document.getElementById('step-2-icon');
                 const step2Time = document.getElementById('step-2-time');
@@ -1143,9 +1275,9 @@
                     if (step2Card) step2Card.className = 'p-3.5 rounded-xl border border-emerald-200 shadow-xs relative overflow-hidden bg-emerald-50/20';
                     if (step2Icon) {
                         step2Icon.className = 'w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold bg-emerald-100 text-emerald-700';
-                        step2Icon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`;
+                        step2Icon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`;
                     }
-                    if (step2Desc) step2Desc.textContent = `Dibaca oleh ${techName}`;
+                    if (step2Desc) step2Desc.textContent = isHighUrgency ? `Inspeksi lapangan oleh ${techName}` : `Dibaca oleh ${techName}`;
                     if (step2Time) step2Time.textContent = formatDateTimeID(ticket.technician_read_at) || 'Telah ditinjau';
                 } else {
                     if (step2Card) step2Card.className = 'p-3.5 rounded-xl border border-slate-200 shadow-xs relative overflow-hidden bg-white';
@@ -1153,7 +1285,7 @@
                         step2Icon.className = 'w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold bg-slate-100 text-slate-400';
                         step2Icon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                     }
-                    if (step2Desc) step2Desc.textContent = `Menunggu dibaca ${techName}`;
+                    if (step2Desc) step2Desc.textContent = isHighUrgency ? `Menunggu inspeksi ${techName}` : `Menunggu dibaca ${techName}`;
                     if (step2Time) step2Time.textContent = 'Dalam antrean';
                 }
 
@@ -1174,8 +1306,8 @@
                             stepRabIcon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>`;
                         }
                         if (stepRabDesc) {
-                            stepRabDesc.textContent = proposal?.total_anggaran 
-                                ? `Disetujui (Rp ${Number(proposal.total_anggaran).toLocaleString('id-ID')})`
+                            stepRabDesc.textContent = rabCost 
+                                ? `Disetujui (Rp ${Number(rabCost).toLocaleString('id-ID')})`
                                 : 'RAB Disetujui Admin Sarpras';
                         }
                         if (stepRabTime) stepRabTime.textContent = formatDateTimeID(proposal?.tanggal_persetujuan || proposal?.updated_at) || 'Telah disetujui';
@@ -1194,9 +1326,9 @@
                             stepRabIcon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                         }
                         if (stepRabDesc) {
-                            stepRabDesc.textContent = proposal?.total_anggaran 
-                                ? `Menunggu ACC (Rp ${Number(proposal.total_anggaran).toLocaleString('id-ID')})`
-                                : 'Menunggu persetujuan Admin';
+                            stepRabDesc.textContent = rabCost 
+                                ? `Menunggu ACC (Rp ${Number(rabCost).toLocaleString('id-ID')})`
+                                : 'Menunggu verifikasi biaya Admin';
                         }
                         if (stepRabTime) stepRabTime.textContent = formatDateTimeID(proposal?.tanggal_pengajuan || proposal?.created_at) || 'Ditinjau Sarpras';
                     } else {
@@ -1275,6 +1407,69 @@
                     }
                     if (step4Desc) step4Desc.textContent = 'Menunggu perbaikan usai';
                     if (step4Time) step4Time.textContent = 'Belum selesai';
+                }
+
+                // 6. RAB Status & Details Box
+                const rabDetailBox = document.getElementById('modal-rab-detail-box');
+                const rabApprovalBadge = document.getElementById('rab-approval-badge');
+                const rabCostAmount = document.getElementById('rab-cost-amount');
+                const rabAdminStatus = document.getElementById('rab-admin-status');
+                const rabNotesText = document.getElementById('rab-notes-text');
+
+                if (rabDetailBox) {
+                    if (isHighUrgency) {
+                        rabDetailBox.classList.remove('hidden');
+                        const formattedCost = rabCost ? 'Rp ' + Number(rabCost).toLocaleString('id-ID') : 'Belum Ditentukan';
+                        const adminNotes = ticket.verification?.catatan_inspeksi || proposal?.rincian_kebutuhan;
+
+                        if (proposal && proposal.status_persetujuan === 'disetujui') {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200';
+                                rabApprovalBadge.textContent = 'Disetujui Admin Sarpras';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = formattedCost;
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Disetujui - Lanjut Pengerjaan Fisik';
+                                rabAdminStatus.className = 'font-bold text-emerald-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = adminNotes || 'Anggaran telah disetujui penuh oleh Admin Sarpras. Petugas siap mengeksekusi perbaikan.';
+                        } else if (proposal && proposal.status_persetujuan === 'ditolak') {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200';
+                                rabApprovalBadge.textContent = 'Ditolak / Butuh Revisi';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = formattedCost;
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Perlu Revisi RAB oleh Teknisi';
+                                rabAdminStatus.className = 'font-bold text-rose-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = adminNotes || 'Pengajuan RAB ditolak oleh Admin Sarpras. Teknisi diminta merevisi rincian anggaran biaya sebelum perbaikan fisik dapat dimulai.';
+                        } else if (status === 'menunggu_rab' || (proposal && proposal.status_persetujuan === 'menunggu_persetujuan')) {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200 animate-pulse';
+                                rabApprovalBadge.textContent = 'Menunggu Persetujuan Admin';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = formattedCost;
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Sedang Ditinjau Admin Sarpras';
+                                rabAdminStatus.className = 'font-bold text-purple-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = adminNotes || 'Teknisi telah menyusun estimasi biaya dan mengajukannya ke Admin Sarpras untuk proses approval anggaran.';
+                        } else {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200';
+                                rabApprovalBadge.textContent = 'Menunggu Penyusunan RAB';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = 'Belum Ditentukan';
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Teknisi Sedang Menginspeksi Fasilitas';
+                                rabAdminStatus.className = 'font-bold text-slate-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = 'Fasilitas dengan kerusakan tinggi membutuhkan pengecekan komponen oleh teknisi sebelum pengajuan RAB dikirim ke admin.';
+                        }
+                    } else {
+                        rabDetailBox.classList.add('hidden');
+                    }
                 }
             } catch (err) {
                 console.error('Error renderTrackingTimeline:', err);
@@ -1920,12 +2115,15 @@
             <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mt-0.5"></span>
         </a>
 
-        <!-- 2. Tiket Saya -->
-        <a href="{{ route('pelapor.tickets') }}" class="flex flex-col items-center justify-center flex-1 py-1 transition-all text-slate-400 hover:text-slate-600 font-medium">
+        <!-- 2. Tiket / WO -->
+        <a href="{{ route('pelapor.tickets') }}" class="flex flex-col items-center justify-center flex-1 py-1 transition-all text-slate-400 hover:text-slate-600 font-medium relative">
             <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
             </svg>
-            <span class="text-[10px] mt-1 tracking-tight">Tiket Saya</span>
+            <span class="text-[10px] mt-1 tracking-tight">Tiket / WO</span>
+            @if(($ongoingCount ?? 0) > 0)
+                <span class="absolute top-0.5 right-6 w-4 h-4 bg-blue-600 text-white rounded-full text-[9px] flex items-center justify-center font-bold">{{ $ongoingCount }}</span>
+            @endif
         </a>
 
         <!-- 3. Pengaturan -->
@@ -1939,6 +2137,27 @@
     </nav>
 
     <script>
+        // Urgency Card Selection Handler
+        function onUrgencySelected(urg) {
+            const banner = document.getElementById('urgency-indicator-banner');
+            const title = document.getElementById('urgency-indicator-title');
+            const desc = document.getElementById('urgency-indicator-desc');
+            if (!banner || !title || !desc) return;
+
+            if (urg === 'rendah') {
+                banner.className = 'p-3 bg-emerald-50/90 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-start gap-2.5 transition-all';
+                title.textContent = 'Urgensi Rendah (Alur 4 Tahapan Tracking)';
+                desc.textContent = 'Kerusakan ringan / minor. Laporan langsung dikerjakan teknisi di lapangan tanpa syarat pengajuan RAB.';
+            } else if (urg === 'sedang') {
+                banner.className = 'p-3 bg-amber-50/90 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start gap-2.5 transition-all';
+                title.textContent = 'Urgensi Sedang (Alur 4 Tahapan Tracking)';
+                desc.textContent = 'Fasilitas mengalami gangguan sebagian. Penanganan langsung dieksekusi teknisi di lapangan tanpa syarat RAB.';
+            } else if (urg === 'tinggi') {
+                banner.className = 'p-3 bg-rose-50/90 border border-rose-200 rounded-xl text-xs text-rose-900 flex items-start gap-2.5 transition-all';
+                title.textContent = 'Urgensi Tinggi (Alur 5 Tahapan Tracking - Butuh RAB & Approval Admin)';
+                desc.textContent = 'Kerusakan berat / mati total. Teknisi wajib mengajukan formulir Rencana Anggaran Biaya (RAB) ke Admin Sarpras terlebih dahulu untuk disetujui sebelum pengerjaan fisik dapat dimulai.';
+            }
+        }
         // Notification Dropdown Toggle
         function togglePelaporNotificationDropdown() {
             const notifDropdown = document.getElementById('pelaporNotificationDropdown');
@@ -2131,5 +2350,39 @@
             </p>
         </div>
     </div>
+
+    <!-- Mobile Bottom Navigation Bar (Khusus Layar Ponsel) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-4 py-2 flex items-center justify-around safe-area-bottom">
+        <!-- 1. Lapor Kerusakan (Aktif) -->
+        <a href="{{ route('pelapor.dashboard') }}" class="flex flex-col items-center justify-center flex-1 py-1 transition-all text-blue-600 font-bold">
+            <svg class="w-5 h-5 text-blue-600 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <span class="text-[10px] mt-1 tracking-tight">Lapor Kerusakan</span>
+            <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mt-0.5"></span>
+        </a>
+
+        <!-- 2. Tiket / WO -->
+        <a href="{{ route('pelapor.tickets') }}" class="flex flex-col items-center justify-center flex-1 py-1 transition-all text-slate-400 hover:text-slate-600 font-medium relative">
+            <div class="relative">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
+                </svg>
+                @if(($ongoingCount ?? 0) > 0)
+                    <span class="absolute -top-1 -right-2 px-1.5 py-0.2 bg-blue-600 text-white rounded-full text-[9px] font-extrabold shadow-xs">{{ $ongoingCount }}</span>
+                @endif
+            </div>
+            <span class="text-[10px] mt-1 tracking-tight">Tiket / WO</span>
+        </a>
+
+        <!-- 3. Pengaturan -->
+        <a href="{{ route('settings.security') }}" class="flex flex-col items-center justify-center flex-1 py-1 transition-all text-slate-400 hover:text-slate-600 font-medium">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span class="text-[10px] mt-1 tracking-tight">Pengaturan</span>
+        </a>
+    </nav>
 </body>
 </html>

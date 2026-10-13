@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiket Saya - SIPERFAS</title>
+    <title>Tiket & Work Order (WO) - SIPERFAS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,9 +30,14 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span>Lapor Kerusakan</span>
                 </a>
-                <a href="{{ route('pelapor.tickets') }}" class="flex items-center space-x-3 px-4 py-2.5 bg-blue-50/50 text-blue-700 rounded-lg text-sm font-semibold border-l-2 border-blue-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
-                    <span>Tiket Saya</span>
+                <a href="{{ route('pelapor.tickets') }}" class="flex items-center justify-between px-4 py-2.5 bg-blue-50/50 text-blue-700 rounded-lg text-sm font-semibold border-l-2 border-blue-600">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
+                        <span>Tiket / WO</span>
+                    </div>
+                    @if(($ongoingCount ?? 0) > 0)
+                        <span class="px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full">{{ $ongoingCount }}</span>
+                    @endif
                 </a>
             </nav>
         </div>
@@ -208,24 +213,37 @@
             <div class="max-w-6xl mx-auto">
 
                 <!-- Header Section -->
-                <div class="mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-2">Tiket Saya</h1>
-                    <p class="text-sm text-gray-500">Pantau status laporan perbaikan fasilitas Anda.</p>
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <h1 class="text-2xl font-black text-gray-900 tracking-tight">Tiket & Work Order (WO)</h1>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">Tracking System</span>
+                        </div>
+                        <p class="text-xs text-gray-500 font-medium">Pantau linimasa pelacakan riwayat pekerjaan lapangan (Alur 4 Tahap & 5 Tahap RAB) serta komparasi foto Sebelum & Sesudah.</p>
+                    </div>
+                    <a href="{{ route('pelapor.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all self-start sm:self-auto">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <span>Buat Laporan Baru</span>
+                    </a>
                 </div>
 
                 <!-- Search & Filter Bar -->
-                <div class="bg-white rounded-xl border border-gray-100 p-4 mb-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shadow-xs">
                     <div class="flex-1 relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
-                        <input type="text" id="searchInput" placeholder="Cari ID tiket (Cth: TKT 0600) atau kata kunci..." class="w-full bg-gray-50/50 border-none rounded-lg py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500 placeholder-gray-400" onkeyup="filterTickets()">
+                        <input type="text" id="searchInput" placeholder="Cari ID tiket (Cth: TKT 0600), fasilitas, atau kata kunci..." class="w-full bg-gray-50/70 border-none rounded-xl py-2.5 pl-10 pr-4 text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 placeholder-gray-400 font-medium" onkeyup="filterTickets()">
                     </div>
                     <div class="flex gap-2 overflow-x-auto">
-                        <button onclick="filterByStatus('Semua')" class="filter-btn active px-4 py-2.5 text-sm font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors whitespace-nowrap">Semua</button>
-                        <button onclick="filterByStatus('Menunggu')" class="filter-btn px-4 py-2.5 text-sm font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors whitespace-nowrap">Menunggu</button>
-                        <button onclick="filterByStatus('Diproses')" class="filter-btn px-4 py-2.5 text-sm font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors whitespace-nowrap">Diproses</button>
-                        <button onclick="filterByStatus('Selesai')" class="filter-btn px-4 py-2.5 text-sm font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors whitespace-nowrap">Selesai</button>
+                        <button onclick="filterByStatus('Semua')" class="filter-btn active px-3.5 py-2 text-xs font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-colors whitespace-nowrap shadow-xs">Semua</button>
+                        <button onclick="filterByStatus('Sedang Berjalan')" class="filter-btn px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors whitespace-nowrap flex items-center gap-1.5">
+                            <span>Sedang Berjalan</span>
+                            @if(($ongoingCount ?? 0) > 0)
+                                <span class="px-1.5 py-0.2 bg-blue-600 text-white rounded-full text-[10px] font-extrabold">{{ $ongoingCount }}</span>
+                            @endif
+                        </button>
+                        <button onclick="filterByStatus('Selesai')" class="filter-btn px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors whitespace-nowrap">Selesai</button>
                     </div>
                 </div>
 
@@ -233,6 +251,75 @@
                 <div id="ticketsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     
                     @forelse($tickets as $ticket)
+                    @php
+                        $urgency = strtolower($ticket->tingkat_urgensi ?? 'sedang');
+                        $isHigh = ($urgency === 'tinggi') || !empty($ticket->verification?->budgetProposal);
+                        $status = $ticket->status_laporan;
+
+                        // Calculate stage and percentage
+                        if ($isHigh) {
+                            $totalSteps = 5;
+                            if ($status === 'selesai') {
+                                $currentStep = 5;
+                                $stepLabel = 'Tahap 5/5: Perbaikan Selesai';
+                                $progressPercent = 100;
+                            } elseif (in_array($status, ['proses', 'proses_perbaikan'])) {
+                                $currentStep = 4;
+                                $stepLabel = 'Tahap 4/5: Pengerjaan Fisik';
+                                $progressPercent = 80;
+                            } elseif ($status === 'menunggu_rab') {
+                                $currentStep = 3;
+                                $stepLabel = 'Tahap 3/5: Persetujuan RAB';
+                                $progressPercent = 60;
+                            } elseif ($ticket->technician_read_at) {
+                                $currentStep = 2;
+                                $stepLabel = 'Tahap 2/5: Inspeksi Teknisi';
+                                $progressPercent = 40;
+                            } else {
+                                $currentStep = 1;
+                                $stepLabel = 'Tahap 1/5: Laporan Terkirim';
+                                $progressPercent = 20;
+                            }
+                        } else {
+                            $totalSteps = 4;
+                            if ($status === 'selesai') {
+                                $currentStep = 4;
+                                $stepLabel = 'Tahap 4/4: Perbaikan Selesai';
+                                $progressPercent = 100;
+                            } elseif (in_array($status, ['proses', 'proses_perbaikan'])) {
+                                $currentStep = 3;
+                                $stepLabel = 'Tahap 3/4: Pengerjaan Fisik';
+                                $progressPercent = 75;
+                            } elseif ($ticket->technician_read_at) {
+                                $currentStep = 2;
+                                $stepLabel = 'Tahap 2/4: Dibaca Teknisi';
+                                $progressPercent = 50;
+                            } else {
+                                $currentStep = 1;
+                                $stepLabel = 'Tahap 1/4: Laporan Terkirim';
+                                $progressPercent = 25;
+                            }
+                        }
+
+                        $urgencyBadge = match($urgency) {
+                            'tinggi' => '<span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200"><svg class="w-2 h-2 text-rose-500 fill-current shrink-0" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5"/></svg><span>Tinggi (5 Tahap RAB)</span></span>',
+                            'sedang' => '<span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200"><svg class="w-2 h-2 text-amber-500 fill-current shrink-0" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5"/></svg><span>Sedang (4 Tahap)</span></span>',
+                            'darurat' => '<span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 border border-red-200 animate-pulse"><svg class="w-2.5 h-2.5 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg><span>Darurat</span></span>',
+                            default => '<span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200"><svg class="w-2 h-2 text-emerald-500 fill-current shrink-0" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5"/></svg><span>Rendah (4 Tahap)</span></span>',
+                        };
+
+                        $statusColors = [
+                            'menunggu' => 'bg-amber-50 text-amber-700 border-amber-200',
+                            'proses' => 'bg-blue-50 text-blue-700 border-blue-200',
+                            'proses_perbaikan' => 'bg-blue-50 text-blue-700 border-blue-200',
+                            'diproses' => 'bg-blue-50 text-blue-700 border-blue-200',
+                            'menunggu_rab' => 'bg-purple-50 text-purple-700 border-purple-200',
+                            'selesai' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            'darurat' => 'bg-red-50 text-red-700 border-red-200'
+                        ];
+                        $statusColor = $statusColors[$ticket->status_laporan] ?? 'bg-gray-100 text-gray-700 border-gray-200';
+                        $woFoto = $ticket->verification?->workOrder?->foto_after;
+                    @endphp
                     <div class="ticket-card bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-xs hover:shadow-lg hover:border-blue-300 hover:-translate-y-1 transition-all duration-200 cursor-pointer group flex flex-col justify-between" 
                          onclick="openTicketDetail({{ $ticket->id_laporan }})"
                          data-status="{{ $ticket->status_laporan }}"
@@ -240,26 +327,31 @@
                         
                         <!-- Ticket Header -->
                         <div class="p-5 border-b border-gray-100">
-                            <div class="flex justify-between items-start mb-2.5">
-                                <span class="text-xs font-extrabold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100/80">TKT {{ str_pad($ticket->id_laporan, 4, '0', STR_PAD_LEFT) }}</span>
-                                @php
-                                    $statusColors = [
-                                        'menunggu' => 'bg-amber-50 text-amber-700 border-amber-200',
-                                        'proses' => 'bg-blue-50 text-blue-700 border-blue-200',
-                                        'proses_perbaikan' => 'bg-blue-50 text-blue-700 border-blue-200',
-                                        'diproses' => 'bg-blue-50 text-blue-700 border-blue-200',
-                                        'menunggu_rab' => 'bg-purple-50 text-purple-700 border-purple-200',
-                                        'selesai' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                                        'darurat' => 'bg-red-50 text-red-700 border-red-200'
-                                    ];
-                                    $statusColor = $statusColors[$ticket->status_laporan] ?? 'bg-gray-100 text-gray-700 border-gray-200';
-                                @endphp
-                                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border {{ $statusColor }}">
+                            <div class="flex justify-between items-start mb-2.5 gap-2 flex-wrap">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-xs font-extrabold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100/80">TKT {{ str_pad($ticket->id_laporan, 4, '0', STR_PAD_LEFT) }}</span>
+                                    {!! $urgencyBadge !!}
+                                </div>
+                                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border {{ $statusColor }} shrink-0">
                                     {{ str_replace('_', ' ', ucfirst($ticket->status_laporan)) }}
                                 </span>
                             </div>
-                            <h3 class="font-bold text-gray-900 text-base mb-1.5 truncate group-hover:text-blue-600 transition-colors">{{ $ticket->facility->nama_fasilitas ?? 'Fasilitas' }}</h3>
-                            <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">{{ $ticket->deskripsi_kerusakan }}</p>
+                            <h3 class="font-bold text-gray-900 text-base mb-1 truncate group-hover:text-blue-600 transition-colors">{{ $ticket->facility->nama_fasilitas ?? 'Fasilitas' }}</h3>
+                            <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-3">{{ $ticket->deskripsi_kerusakan }}</p>
+
+                            <!-- Tracking Progress Indicator on Card -->
+                            <div class="p-2.5 bg-slate-50/90 rounded-xl border border-slate-100 space-y-1.5">
+                                <div class="flex items-center justify-between text-[11px] font-bold">
+                                    <span class="text-slate-800 flex items-center gap-1 truncate">
+                                        <span class="w-2 h-2 rounded-full {{ $progressPercent === 100 ? 'bg-emerald-500' : 'bg-blue-600 animate-pulse' }} shrink-0"></span>
+                                        <span class="truncate">{{ $stepLabel }}</span>
+                                    </span>
+                                    <span class="text-slate-500 text-[10px] font-extrabold shrink-0 ml-1">{{ $progressPercent }}%</span>
+                                </div>
+                                <div class="w-full bg-slate-200/80 h-1.5 rounded-full overflow-hidden">
+                                    <div class="h-full rounded-full transition-all duration-500 {{ $progressPercent === 100 ? 'bg-emerald-500' : 'bg-blue-600' }}" style="width: {{ $progressPercent }}%"></div>
+                                </div>
+                            </div>
 
                             <div class="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-100 text-xs">
                                 @if($ticket->category)
@@ -276,21 +368,34 @@
                             </div>
                         </div>
 
-                        <!-- Ticket Body Info -->
+                        <!-- Ticket Body Info with Before/After indicators -->
                         <div class="p-4 bg-gray-50/50 space-y-2">
-                            <div class="flex items-center text-xs text-gray-500">
-                                <svg class="w-4 h-4 mr-1.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <span>{{ $ticket->created_at->format('d M Y, H:i') }} WIB</span>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <span>{{ $ticket->created_at->format('d M Y, H:i') }} WIB</span>
+                                </div>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded {{ $ticket->foto_bukti ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-400' }}">
+                                    Foto Sebelum: {{ $ticket->foto_bukti ? 'Tersedia' : '-' }}
+                                </span>
                             </div>
-                            <div class="flex items-center text-xs text-gray-500">
-                                <svg class="w-4 h-4 mr-1.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                <span class="truncate">{{ $ticket->facility->lokasi_detail ?? 'Lokasi tidak tersedia' }}</span>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center min-w-0">
+                                    <svg class="w-4 h-4 mr-1.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <span class="truncate">{{ $ticket->facility->lokasi_detail ?? 'Lokasi tidak tersedia' }}</span>
+                                </div>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded {{ $woFoto ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-400' }}">
+                                    Foto Sesudah: {{ $woFoto ? 'Tersedia' : ($ticket->status_laporan === 'selesai' ? '-' : 'Menunggu Selesai') }}
+                                </span>
                             </div>
                         </div>
 
                         <!-- Card Action Footer -->
                         <div class="px-4 py-2.5 bg-blue-50/40 border-t border-blue-50/60 flex items-center justify-between text-xs font-semibold text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                            <span>Lihat Rincian & Pelacakan</span>
+                            <span class="flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                                <span>Lihat Tracking Linimasa & Foto</span>
+                            </span>
                             <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
 
@@ -365,6 +470,9 @@
                             <span class="text-[11px] text-slate-500 font-medium" id="modal-tracking-summary">Diperbarui otomatis oleh sistem</span>
                         </div>
 
+                        <!-- Flow Distinction Banner (4 Tahap vs 5 Tahap RAB) -->
+                        <div id="modal-flow-banner" class="mb-4"></div>
+
                         <!-- 4 or 5-Stage Stepper Grid -->
                         <div id="tracking-stepper-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 relative">
                             
@@ -425,6 +533,33 @@
                                 <span class="text-[10px] text-slate-400 font-semibold block" id="step-4-time">-</span>
                             </div>
 
+                        </div>
+
+                        <!-- RAB Status & Breakdown Card (Khusus Urgensi Tinggi) -->
+                        <div id="modal-rab-detail-box" class="mt-4 pt-4 border-t border-slate-100 hidden">
+                            <div class="p-4 rounded-2xl bg-purple-50/50 border border-purple-200/70">
+                                <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center text-[10px] font-black shadow-xs">RAB</span>
+                                        <h5 class="text-xs font-bold text-purple-950">Pengajuan Anggaran Biaya (RAB) ke Admin Sarpras</h5>
+                                    </div>
+                                    <span id="rab-approval-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold"></span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs mt-3">
+                                    <div class="bg-white/90 p-3 rounded-xl border border-purple-100 shadow-2xs">
+                                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block">Estimasi Biaya Diajukan</span>
+                                        <span id="rab-cost-amount" class="text-sm font-extrabold text-purple-900 mt-0.5 block">-</span>
+                                    </div>
+                                    <div class="bg-white/90 p-3 rounded-xl border border-purple-100 shadow-2xs">
+                                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block">Status Verifikasi Sarpras</span>
+                                        <span id="rab-admin-status" class="font-bold text-slate-800 text-xs mt-0.5 block">-</span>
+                                    </div>
+                                </div>
+                                <div id="rab-notes-container" class="mt-2.5 bg-white/90 p-3 rounded-xl border border-purple-100 text-xs shadow-2xs">
+                                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider block mb-1">Catatan Persetujuan / Revisi Admin Sarpras</span>
+                                    <p id="rab-notes-text" class="text-slate-700 font-semibold leading-relaxed text-xs">-</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -637,14 +772,22 @@
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.ticket-card');
             let visibleCount = 0;
+            const filterNorm = currentFilter.toLowerCase();
 
             cards.forEach(card => {
-                const status = card.getAttribute('data-status');
+                const status = (card.getAttribute('data-status') || '').toLowerCase();
                 const searchData = card.getAttribute('data-search') || '';
                 
-                const matchesStatus = currentFilter === 'Semua' 
-                    || status.toLowerCase() === currentFilter.toLowerCase()
-                    || (currentFilter.toLowerCase() === 'diproses' && (status === 'proses' || status === 'proses_perbaikan' || status === 'menunggu_rab' || status === 'darurat'));
+                let matchesStatus = false;
+                if (filterNorm === 'semua') {
+                    matchesStatus = true;
+                } else if (filterNorm === 'sedang berjalan' || filterNorm === 'diproses') {
+                    matchesStatus = ['menunggu', 'proses', 'proses_perbaikan', 'menunggu_rab', 'darurat'].includes(status);
+                } else if (filterNorm === 'selesai') {
+                    matchesStatus = (status === 'selesai');
+                } else {
+                    matchesStatus = (status === filterNorm);
+                }
                 
                 const matchesSearch = !searchTerm || searchData.includes(searchTerm);
 
@@ -858,11 +1001,55 @@
                 const urgency = (ticket.tingkat_urgensi || '').toLowerCase();
                 const proposal = ticket.verification?.budget_proposal || ticket.verification?.budgetProposal;
                 const isHighUrgency = (urgency === 'tinggi') || !!proposal;
+                const rabCost = proposal?.estimasi_biaya || proposal?.total_anggaran;
 
                 const grid = document.getElementById('tracking-stepper-grid');
                 const stepRabCard = document.getElementById('step-rab-card');
                 const step3Badge = document.getElementById('step-3-badge');
                 const step4Badge = document.getElementById('step-4-badge');
+
+                // Flow banner & Summary Header
+                const bannerEl = document.getElementById('modal-flow-banner');
+                const summaryEl = document.getElementById('modal-tracking-summary');
+                if (bannerEl) {
+                    if (isHighUrgency) {
+                        bannerEl.innerHTML = `
+                            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200/80 flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 text-sm font-bold shadow-xs">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </div>
+                                <div class="flex-1 text-xs">
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="font-extrabold text-purple-900">Alur Sistem 5 Tahap (Urgensi Tinggi)</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-200 text-purple-800">Butuh Pengajuan Biaya RAB</span>
+                                    </div>
+                                    <p class="text-purple-950/80 text-[11px] leading-relaxed">
+                                        Kerusakan tingkat <strong>Tinggi</strong> memerlukan inspeksi teknisi dan pengajuan <strong>Rancangan Anggaran Biaya (RAB)</strong> ke Admin Sarpras. Pengerjaan fisik lapangan baru dimulai setelah admin menyetujui RAB (atau revisi jika ditolak).
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                        if (summaryEl) summaryEl.textContent = 'Sistem 5 Tahap (Dengan Validasi & Persetujuan RAB Sarpras)';
+                    } else {
+                        bannerEl.innerHTML = `
+                            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200/80 flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 text-sm font-bold shadow-xs">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <div class="flex-1 text-xs">
+                                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                                        <span class="font-extrabold text-blue-900">Alur Sistem 4 Tahap (Urgensi Rendah & Sedang)</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Eksekusi Langsung</span>
+                                    </div>
+                                    <p class="text-blue-950/80 text-[11px] leading-relaxed">
+                                        Kerusakan tingkat <strong>Rendah / Sedang</strong> dapat langsung dikerjakan oleh petugas teknisi terkait tanpa memerlukan pengajuan RAB khusus ke Admin Sarpras.
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                        if (summaryEl) summaryEl.textContent = 'Sistem 4 Tahap (Penanganan Cepat Langsung Tanpa RAB)';
+                    }
+                }
 
                 // Sesuaikan kolom grid & nomor tahap berdasarkan urgensi
                 if (grid) {
@@ -893,10 +1080,10 @@
                     step1Icon.className = 'w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold bg-emerald-100 text-emerald-700';
                     step1Icon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>`;
                 }
-                if (step1Desc) step1Desc.textContent = 'Laporan berhasil dibuat';
+                if (step1Desc) step1Desc.textContent = isHighUrgency ? 'Laporan kerusakan berat terkirim' : 'Laporan berhasil dibuat';
                 if (step1Time) step1Time.textContent = formatDateTimeID(ticket.created_at || ticket.tanggal_waktu) || 'Terkirim';
 
-                // 2. Step 2: Dibaca Teknisi
+                // 2. Step 2: Dibaca / Diinspeksi Teknisi
                 const step2Card = document.getElementById('step-2-card');
                 const step2Icon = document.getElementById('step-2-icon');
                 const step2Time = document.getElementById('step-2-time');
@@ -910,7 +1097,7 @@
                         step2Icon.className = 'w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold bg-emerald-100 text-emerald-700';
                         step2Icon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`;
                     }
-                    if (step2Desc) step2Desc.textContent = `Dibaca oleh ${techName}`;
+                    if (step2Desc) step2Desc.textContent = isHighUrgency ? `Inspeksi lapangan oleh ${techName}` : `Dibaca oleh ${techName}`;
                     if (step2Time) step2Time.textContent = formatDateTimeID(ticket.technician_read_at) || 'Telah ditinjau';
                 } else {
                     if (step2Card) step2Card.className = 'p-3.5 rounded-xl border border-slate-200 shadow-xs relative overflow-hidden bg-white';
@@ -918,7 +1105,7 @@
                         step2Icon.className = 'w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold bg-slate-100 text-slate-400';
                         step2Icon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                     }
-                    if (step2Desc) step2Desc.textContent = `Menunggu dibaca ${techName}`;
+                    if (step2Desc) step2Desc.textContent = isHighUrgency ? `Menunggu inspeksi ${techName}` : `Menunggu dibaca ${techName}`;
                     if (step2Time) step2Time.textContent = 'Dalam antrean';
                 }
 
@@ -939,8 +1126,8 @@
                             stepRabIcon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>`;
                         }
                         if (stepRabDesc) {
-                            stepRabDesc.textContent = proposal?.total_anggaran 
-                                ? `Disetujui (Rp ${Number(proposal.total_anggaran).toLocaleString('id-ID')})`
+                            stepRabDesc.textContent = rabCost 
+                                ? `Disetujui (Rp ${Number(rabCost).toLocaleString('id-ID')})`
                                 : 'RAB Disetujui Admin Sarpras';
                         }
                         if (stepRabTime) stepRabTime.textContent = formatDateTimeID(proposal?.tanggal_persetujuan || proposal?.updated_at) || 'Telah disetujui';
@@ -959,9 +1146,9 @@
                             stepRabIcon.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                         }
                         if (stepRabDesc) {
-                            stepRabDesc.textContent = proposal?.total_anggaran 
-                                ? `Menunggu ACC (Rp ${Number(proposal.total_anggaran).toLocaleString('id-ID')})`
-                                : 'Menunggu persetujuan Admin';
+                            stepRabDesc.textContent = rabCost 
+                                ? `Menunggu ACC (Rp ${Number(rabCost).toLocaleString('id-ID')})`
+                                : 'Menunggu verifikasi biaya Admin';
                         }
                         if (stepRabTime) stepRabTime.textContent = formatDateTimeID(proposal?.tanggal_pengajuan || proposal?.created_at) || 'Ditinjau Sarpras';
                     } else {
@@ -1040,6 +1227,69 @@
                     }
                     if (step4Desc) step4Desc.textContent = 'Menunggu perbaikan usai';
                     if (step4Time) step4Time.textContent = 'Belum selesai';
+                }
+
+                // 6. RAB Status & Details Box
+                const rabDetailBox = document.getElementById('modal-rab-detail-box');
+                const rabApprovalBadge = document.getElementById('rab-approval-badge');
+                const rabCostAmount = document.getElementById('rab-cost-amount');
+                const rabAdminStatus = document.getElementById('rab-admin-status');
+                const rabNotesText = document.getElementById('rab-notes-text');
+
+                if (rabDetailBox) {
+                    if (isHighUrgency) {
+                        rabDetailBox.classList.remove('hidden');
+                        const formattedCost = rabCost ? 'Rp ' + Number(rabCost).toLocaleString('id-ID') : 'Belum Ditentukan';
+                        const adminNotes = ticket.verification?.catatan_inspeksi || proposal?.rincian_kebutuhan;
+
+                        if (proposal && proposal.status_persetujuan === 'disetujui') {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200';
+                                rabApprovalBadge.textContent = 'Disetujui Admin Sarpras';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = formattedCost;
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Disetujui - Lanjut Pengerjaan Fisik';
+                                rabAdminStatus.className = 'font-bold text-emerald-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = adminNotes || 'Anggaran telah disetujui penuh oleh Admin Sarpras. Petugas siap mengeksekusi perbaikan.';
+                        } else if (proposal && proposal.status_persetujuan === 'ditolak') {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200';
+                                rabApprovalBadge.textContent = 'Ditolak / Butuh Revisi';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = formattedCost;
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Perlu Revisi RAB oleh Teknisi';
+                                rabAdminStatus.className = 'font-bold text-rose-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = adminNotes || 'Pengajuan RAB ditolak oleh Admin Sarpras. Teknisi diminta merevisi rincian anggaran biaya sebelum perbaikan fisik dapat dimulai.';
+                        } else if (status === 'menunggu_rab' || (proposal && proposal.status_persetujuan === 'menunggu_persetujuan')) {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200 animate-pulse';
+                                rabApprovalBadge.textContent = 'Menunggu Persetujuan Admin';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = formattedCost;
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Sedang Ditinjau Admin Sarpras';
+                                rabAdminStatus.className = 'font-bold text-purple-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = adminNotes || 'Teknisi telah menyusun estimasi biaya dan mengajukannya ke Admin Sarpras untuk proses approval anggaran.';
+                        } else {
+                            if (rabApprovalBadge) {
+                                rabApprovalBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200';
+                                rabApprovalBadge.textContent = 'Menunggu Penyusunan RAB';
+                            }
+                            if (rabCostAmount) rabCostAmount.textContent = 'Belum Ditentukan';
+                            if (rabAdminStatus) {
+                                rabAdminStatus.textContent = 'Teknisi Sedang Menginspeksi Fasilitas';
+                                rabAdminStatus.className = 'font-bold text-slate-600 text-xs mt-0.5 block';
+                            }
+                            if (rabNotesText) rabNotesText.textContent = 'Fasilitas dengan kerusakan tinggi membutuhkan pengecekan komponen oleh teknisi sebelum pengajuan RAB dikirim ke admin.';
+                        }
+                    } else {
+                        rabDetailBox.classList.add('hidden');
+                    }
                 }
             } catch (err) {
                 console.error('Error renderTrackingTimeline:', err);
@@ -1253,12 +1503,17 @@
             <span class="text-[10px] mt-1 tracking-tight">Lapor Kerusakan</span>
         </a>
 
-        <!-- 2. Tiket Saya (Aktif) -->
-        <a href="{{ route('pelapor.tickets') }}" class="flex flex-col items-center justify-center flex-1 py-1 transition-all text-blue-600 font-bold">
-            <svg class="w-5 h-5 text-blue-600 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
-            </svg>
-            <span class="text-[10px] mt-1 tracking-tight">Tiket Saya</span>
+        <!-- 2. Tiket / WO (Aktif) -->
+        <a href="{{ route('pelapor.tickets') }}" class="flex flex-col items-center justify-center flex-1 py-1 transition-all text-blue-600 font-bold relative">
+            <div class="relative">
+                <svg class="w-5 h-5 text-blue-600 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
+                </svg>
+                @if(($ongoingCount ?? 0) > 0)
+                    <span class="absolute -top-1 -right-2 px-1.5 py-0.2 bg-blue-600 text-white rounded-full text-[9px] font-extrabold shadow-xs">{{ $ongoingCount }}</span>
+                @endif
+            </div>
+            <span class="text-[10px] mt-1 tracking-tight">Tiket / WO</span>
             <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mt-0.5"></span>
         </a>
 

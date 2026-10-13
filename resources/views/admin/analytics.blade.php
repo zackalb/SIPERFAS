@@ -317,8 +317,9 @@
                         {{ $periodLabel ?? 'Tahun Berjalan' }}
                     </span>
                     @if(($period ?? 'tahun') !== 'tahun')
-                        <a href="{{ route('admin.analytics.index', ['period' => 'tahun']) }}" class="text-[11px] font-bold text-slate-400 hover:text-red-600 transition-colors ml-1 px-1.5 py-0.5 rounded hover:bg-red-50" title="Reset ke filter awal Tahun Berjalan">
-                            ✕ Reset
+                        <a href="{{ route('admin.analytics.index', ['period' => 'tahun']) }}" class="text-[11px] font-bold text-slate-400 hover:text-red-600 transition-colors ml-1 px-1.5 py-0.5 rounded hover:bg-red-50 inline-flex items-center gap-1" title="Reset ke filter awal Tahun Berjalan">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span>Reset</span>
                         </a>
                     @endif
                 </div>
@@ -621,16 +622,19 @@
                                     </td>
                                     <td class="py-3.5 px-3">
                                         @if($trx['status'] === 'Terbayar')
-                                            <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-[11px] border border-emerald-100">
-                                                ✓ {{ $trx['status'] }}
+                                            <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-[11px] border border-emerald-100 inline-flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                                <span>{{ $trx['status'] }}</span>
                                             </span>
                                         @elseif($trx['status'] === 'Ditolak')
-                                            <span class="px-2.5 py-1 rounded-lg bg-red-50 text-red-700 font-bold text-[11px] border border-red-100">
-                                                ✕ {{ $trx['status'] }}
+                                            <span class="px-2.5 py-1 rounded-lg bg-red-50 text-red-700 font-bold text-[11px] border border-red-100 inline-flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                <span>{{ $trx['status'] }}</span>
                                             </span>
                                         @else
-                                            <span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 font-bold text-[11px] border border-amber-100">
-                                                ⏳ {{ $trx['status'] }}
+                                            <span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 font-bold text-[11px] border border-amber-100 inline-flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                <span>{{ $trx['status'] }}</span>
                                             </span>
                                         @endif
                                     </td>

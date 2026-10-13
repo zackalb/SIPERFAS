@@ -64,6 +64,37 @@
                     </div>
                 @enderror
 
+                <!-- Quick Role Switcher (Pelapor: Siswa & Guru) -->
+                <div class="mb-5 bg-gradient-to-r from-blue-50/70 to-indigo-50/50 border border-blue-100 rounded-2xl p-3.5 shadow-xs">
+                    <div class="flex items-center justify-between mb-2.5">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-blue-900 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            Masuk Sebagai Pelapor:
+                        </span>
+                        <span class="text-[10px] text-blue-600 font-semibold bg-white/80 px-2 py-0.5 rounded-full border border-blue-100">Pilih salah satu</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="selectRole('siswa')" id="role-btn-siswa" class="flex items-center gap-2.5 p-2.5 rounded-xl border transition-all text-slate-700 bg-white border-slate-200/90 hover:border-blue-500 hover:shadow-xs cursor-pointer text-left group">
+                            <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                            </span>
+                            <div class="min-w-0">
+                                <span class="block text-xs font-bold text-slate-900 leading-tight">Siswa</span>
+                                <span class="block text-[10px] text-slate-400 font-medium truncate">siswa@sekolah.com</span>
+                            </div>
+                        </button>
+                        <button type="button" onclick="selectRole('guru')" id="role-btn-guru" class="flex items-center gap-2.5 p-2.5 rounded-xl border transition-all text-slate-700 bg-white border-slate-200/90 hover:border-indigo-500 hover:shadow-xs cursor-pointer text-left group">
+                            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v5m4-5v5m4-5v5M3 4h18M4 4h16v9H4V4zm4 15h8"></path></svg>
+                            </span>
+                            <div class="min-w-0">
+                                <span class="block text-xs font-bold text-slate-900 leading-tight">Guru</span>
+                                <span class="block text-[10px] text-slate-400 font-medium truncate">guru@sekolah.com</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
                 <form action="{{ route('login') }}" method="POST" class="space-y-4">
                     @csrf
 
@@ -130,5 +161,37 @@
         </div>
     </div>
 
+    <script>
+        function selectRole(role) {
+            const identityInput = document.querySelector('input[name="identity"]');
+            const passwordInput = document.getElementById('password_input');
+            const btnSiswa = document.getElementById('role-btn-siswa');
+            const btnGuru = document.getElementById('role-btn-guru');
+
+            if (role === 'siswa') {
+                if (identityInput) identityInput.value = 'siswa@sekolah.com';
+                if (passwordInput) passwordInput.value = 'password123';
+                if (btnSiswa) {
+                    btnSiswa.classList.add('border-blue-600', 'bg-blue-50/70', 'ring-2', 'ring-blue-200');
+                    btnSiswa.classList.remove('bg-white');
+                }
+                if (btnGuru) {
+                    btnGuru.classList.remove('border-indigo-600', 'bg-indigo-50/70', 'ring-2', 'ring-indigo-200');
+                    btnGuru.classList.add('bg-white');
+                }
+            } else if (role === 'guru') {
+                if (identityInput) identityInput.value = 'guru@sekolah.com';
+                if (passwordInput) passwordInput.value = 'password123';
+                if (btnGuru) {
+                    btnGuru.classList.add('border-indigo-600', 'bg-indigo-50/70', 'ring-2', 'ring-indigo-200');
+                    btnGuru.classList.remove('bg-white');
+                }
+                if (btnSiswa) {
+                    btnSiswa.classList.remove('border-blue-600', 'bg-blue-50/70', 'ring-2', 'ring-blue-200');
+                    btnSiswa.classList.add('bg-white');
+                }
+            }
+        }
+    </script>
 </body>
 </html>

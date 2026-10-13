@@ -49,12 +49,21 @@ class PelaporController extends Controller
                     $q->orWhereIn('id_user', [1, 4]);
                 }
             })
-            ->with(['facility', 'category', 'technician', 'verification.workOrder', 'verification.budgetProposal'])
+            ->with(['facility', 'category', 'technician', 'verification.workOrder', 'verification.budgetProposal.items'])
             ->latest()
             ->take(5)
             ->get();
 
-        return view('pelapor.dashboard', compact('user', 'facilities', 'categories', 'myReports', 'emergencyTechnicians'));
+        $ongoingCount = DamageReport::where(function ($q) use ($user) {
+                $q->where('id_user', $user->id_user);
+                if (in_array($user->email, ['siswa@sekolah.com', 'pelapor@sekolah.com'])) {
+                    $q->orWhereIn('id_user', [1, 4]);
+                }
+            })
+            ->whereIn('status_laporan', ['menunggu', 'menunggu_rab', 'proses', 'proses_perbaikan', 'darurat'])
+            ->count();
+
+        return view('pelapor.dashboard', compact('user', 'facilities', 'categories', 'myReports', 'emergencyTechnicians', 'ongoingCount'));
     }
 
     /**
@@ -68,6 +77,7 @@ class PelaporController extends Controller
             'category_id'         => 'nullable|exists:categories,id',
             'tingkat_urgensi'     => 'required|string|in:rendah,sedang,tinggi,darurat,Rendah,Sedang,Tinggi,Darurat',
             'deskripsi_kerusakan' => 'required|string|min:10',
+            'catatan_tambahan'    => 'nullable|string|max:1000',
             'foto_bukti'          => 'required_without:foto_kamera_base64|file|mimes:jpg,jpeg,png|max:5120',
             'foto_kamera_base64'  => 'required_without:foto_bukti|nullable|string',
         ], [
@@ -160,13 +170,18 @@ class PelaporController extends Controller
             $statusLaporan = 'menunggu';
         }
 
+        $deskripsi = $request->deskripsi_kerusakan;
+        if ($request->filled('catatan_tambahan')) {
+            $deskripsi .= "\n\n[Catatan Tambahan]: " . trim($request->catatan_tambahan);
+        }
+
         DamageReport::create([
             'id_user'             => Auth::id() ?: Auth::user()->id_user,
             'technician_id'       => $technician ? $technician->id_user : null,
             'id_fasilitas'        => $request->id_fasilitas,
             'category_id'         => $categoryId,
             'tanggal_waktu'       => now(),
-            'deskripsi_kerusakan' => $request->deskripsi_kerusakan,
+            'deskripsi_kerusakan' => $deskripsi,
             'foto_bukti'          => $fotoPath,
             'is_emergency'        => $urgensi === 'darurat',
             'tingkat_urgensi'     => $urgensi,
@@ -316,10 +331,19 @@ class PelaporController extends Controller
                                 $q->orWhereIn('id_user', [1, 4]);
                             }
                         })
-                        ->with(['facility', 'user', 'category', 'technician', 'verification.workOrder', 'verification.budgetProposal'])
+                        ->with(['facility', 'user', 'category', 'technician', 'verification.workOrder', 'verification.budgetProposal.items'])
                         ->latest()
                         ->get();
 
-        return view('pelapor.tickets', compact('user', 'tickets'));
+        $ongoingCount = DamageReport::where(function ($q) use ($user) {
+                            $q->where('id_user', $user->id_user);
+                            if (in_array($user->email, ['siswa@sekolah.com', 'pelapor@sekolah.com'])) {
+                                $q->orWhereIn('id_user', [1, 4]);
+                            }
+                        })
+                        ->whereIn('status_laporan', ['menunggu', 'menunggu_rab', 'proses', 'proses_perbaikan', 'darurat'])
+                        ->count();
+
+        return view('pelapor.tickets', compact('user', 'tickets', 'ongoingCount'));
     }
 }

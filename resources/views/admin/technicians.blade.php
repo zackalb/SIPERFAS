@@ -268,25 +268,25 @@
                                     
                                     // Sesuai dengan icon di Dashboard (Fasilitas Sering Rusak)
                                     if ($catId == 1 || stripos($lowerCat, 'listrik') !== false) {
-                                        $icon = '⚡';
+                                        $iconSvg = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>';
                                         $badgeClass = 'bg-amber-50 text-amber-700 border-amber-200';
                                     } elseif ($catId == 2 || stripos($lowerCat, 'air') !== false) {
-                                        $icon = '🚰';
+                                        $iconSvg = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>';
                                         $badgeClass = 'bg-sky-50 text-sky-700 border-sky-200';
                                     } elseif ($catId == 3 || stripos($lowerCat, 'bangunan') !== false) {
-                                        $icon = '🏢';
+                                        $iconSvg = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>';
                                         $badgeClass = 'bg-orange-50 text-orange-700 border-orange-200';
                                     } elseif ($catId == 4 || $lowerCat === 'it' || stripos($lowerCat, 'komputer') !== false) {
-                                        $icon = '💻';
+                                        $iconSvg = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>';
                                         $badgeClass = 'bg-indigo-50 text-indigo-700 border-indigo-200';
                                     } elseif ($catId == 6 || stripos($lowerCat, 'jaringan') !== false) {
-                                        $icon = '🌐';
+                                        $iconSvg = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>';
                                         $badgeClass = 'bg-blue-50 text-blue-700 border-blue-200';
                                     } elseif ($catId == 7 || stripos($lowerCat, 'kendaraan') !== false || stripos($lowerCat, 'mobil') !== false || stripos($lowerCat, 'motor') !== false) {
-                                        $icon = '🚗';
+                                        $iconSvg = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17a2 2 0 100-4 2 2 0 000 4zm8 0a2 2 0 100-4 2 2 0 000 4zM3 13l2-6a2 2 0 012-1h10a2 2 0 012 1l2 6m-16 0h16m0 0v4a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-4z"/></svg>';
                                         $badgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
                                     } else {
-                                        $icon = '🔧';
+                                        $iconSvg = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>';
                                         $badgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
                                     }
                                 @endphp
@@ -314,7 +314,7 @@
                                     <!-- Spesialisasi Badge -->
                                     <td class="px-6 py-4">
                                         <span class="px-2.5 py-1 rounded-lg text-xs font-bold border inline-flex items-center gap-1.5 {{ $badgeClass }}">
-                                            <span>{{ $icon }}</span>
+                                            <span class="inline-flex items-center">{!! $iconSvg !!}</span>
                                             <span>{{ $catName }}</span>
                                         </span>
                                     </td>
