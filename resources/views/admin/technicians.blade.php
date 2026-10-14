@@ -19,7 +19,7 @@
         <div class="p-6">
             <!-- Logo -->
             <div class="flex items-center space-x-3 mb-8">
-                <img src="{{ asset('logo.png') }}" alt="Logo" class="w-8 h-8 object-contain">
+                <img src="{{ \App\Models\Setting::getLogo() }}" alt="Logo" class="w-8 h-8 object-contain">
                 <div>
                     <h1 class="text-sm font-bold text-slate-900 leading-tight">SIPERFAS</h1>
                     <p class="text-[10px] text-slate-500 font-medium">Sistem Informasi Pelaporan Fasilitas</p>
@@ -835,5 +835,6 @@
             filterTechnicians(true);
         });
     </script>
+    @include('partials.logout-modal')
 </body>
 </html>

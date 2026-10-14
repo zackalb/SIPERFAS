@@ -33,7 +33,7 @@
             
             <div class="w-full max-w-md mx-auto">
                 <div class="text-center mb-6">
-                    <img src="{{ asset('logo.png') }}" class="h-10 mx-auto mb-4 object-contain" alt="Logo">
+                    <img src="{{ \App\Models\Setting::getLogo() }}" class="h-10 mx-auto mb-4 object-contain" alt="Logo">
                     <h1 class="text-xl font-bold text-[#0B3A82] mb-1.5">Atur Kata Sandi Baru</h1>
                     <p class="text-[13px] text-gray-500 tracking-wide">Silakan tentukan kata sandi baru untuk akun Anda.</p>
                 </div>

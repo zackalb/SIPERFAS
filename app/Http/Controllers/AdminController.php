@@ -210,6 +210,13 @@ class AdminController extends Controller
             $proposal->schoolBudget->save();
         }
 
+        \App\Models\ActivityLog::record(
+            'APPROVE_RAB',
+            'Admin menyetujui proposal RAB ID #' . $id_rab . ' senilai Rp ' . number_format($proposal->estimasi_biaya, 0, ',', '.'),
+            $user,
+            ['id_rab' => $id_rab, 'estimasi_biaya' => $proposal->estimasi_biaya]
+        );
+
         return back()->with('success', 'RAB berhasil disetujui (Approved)! Teknisi dapat segera mengeksekusi perbaikan.');
     }
 
@@ -237,6 +244,13 @@ class AdminController extends Controller
             $proposal->verification->catatan_inspeksi = 'Catatan Penolakan/Revisi: ' . $request->catatan_keputusan;
             $proposal->verification->save();
         }
+
+        \App\Models\ActivityLog::record(
+            'REJECT_RAB',
+            'Admin menolak / meminta revisi proposal RAB ID #' . $id_rab . ($request->filled('catatan_keputusan') ? ': ' . $request->catatan_keputusan : ''),
+            $user,
+            ['id_rab' => $id_rab]
+        );
 
         return back()->with('success', 'RAB telah ditolak / diminta revisi ke teknisi.');
     }

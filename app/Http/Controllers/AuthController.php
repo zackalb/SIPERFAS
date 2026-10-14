@@ -82,6 +82,12 @@ class AuthController extends Controller
             Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
             
+            \App\Models\ActivityLog::record(
+                'LOGIN',
+                'Pengguna ' . ($user->nama ?? $user->email) . ' berhasil masuk ke sistem.',
+                $user
+            );
+
             $status = strtolower(trim($user->status ?? 'pelapor'));
             session(['active_role' => $status]);
             
@@ -116,6 +122,15 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        if ($user) {
+            \App\Models\ActivityLog::record(
+                'LOGOUT',
+                'Pengguna ' . ($user->nama ?? $user->email) . ' keluar dari sistem.',
+                $user
+            );
+        }
+
         Auth::logout();
         
         $request->session()->invalidate();

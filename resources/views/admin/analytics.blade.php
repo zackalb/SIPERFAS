@@ -97,7 +97,7 @@
         <div class="p-6">
             <!-- Logo -->
             <div class="flex items-center space-x-3 mb-8">
-                <img src="{{ asset('logo.png') }}" alt="Logo" class="w-8 h-8 object-contain">
+                <img src="{{ \App\Models\Setting::getLogo() }}" alt="Logo" class="w-8 h-8 object-contain">
                 <div>
                     <h1 class="text-sm font-bold text-slate-900 leading-tight">SIPERFAS</h1>
                     <p class="text-[10px] text-slate-500 font-medium">Sistem Informasi Pelaporan Fasilitas</p>
@@ -257,7 +257,7 @@
             <div class="hidden print:block mb-6 border-b-2 border-slate-900 pb-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3.5">
-                        <img src="{{ asset('logo.png') }}" alt="Logo" class="w-12 h-12 object-contain">
+                        <img src="{{ \App\Models\Setting::getLogo() }}" alt="Logo" class="w-12 h-12 object-contain">
                         <div>
                             <h1 class="text-lg font-black text-slate-900 uppercase tracking-wide">SIPERFAS - LAPORAN KEUANGAN & REALISASI ANGGARAN SARPRAS</h1>
                             <p class="text-xs text-slate-600 font-bold mt-0.5">Badan Pengelola Sarana, Prasarana & Manajemen Aset Sekolah</p>
@@ -1180,5 +1180,6 @@
             URL.revokeObjectURL(url);
         }
     </script>
+    @include('partials.logout-modal')
 </body>
 </html>

@@ -44,8 +44,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/tasks/{id}/rab', [\App\Http\Controllers\PetugasController::class, 'submitRab'])->name('tasks.rab');
     });
 
-    // Pengaturan Keamanan & 2FA
+    // Pengaturan Keamanan & 2FA (Serta Logo & Log untuk Admin)
     Route::get('/settings/security', [\App\Http\Controllers\SecurityController::class, 'index'])->name('settings.security');
+    Route::post('/admin/settings/logo', [\App\Http\Controllers\SecurityController::class, 'updateLogo'])->name('admin.settings.logo.update');
+    Route::post('/admin/settings/logo/reset', [\App\Http\Controllers\SecurityController::class, 'resetLogo'])->name('admin.settings.logo.reset');
 
     // Notifikasi Global (Tandai Baca Semua & Per Item)
     Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('notifications.mark-all-read');

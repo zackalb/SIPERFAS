@@ -18,7 +18,7 @@
     <aside class="w-64 bg-white border-r border-gray-100 flex flex-col h-full hidden md:flex">
         <div class="p-6">
             <div class="flex items-center space-x-3 mb-8">
-                <img src="{{ asset('logo.png') }}" alt="Logo" class="w-8 h-8 object-contain">
+                <img src="{{ \App\Models\Setting::getLogo() }}" alt="Logo" class="w-8 h-8 object-contain">
                 <div>
                     <h1 class="text-sm font-bold text-gray-900 leading-tight">SIPERFAS</h1>
                     <p class="text-[10px] text-gray-500 font-medium">Sistem Informasi Pelaporan Fasilitas</p>
@@ -69,7 +69,7 @@
             <div class="flex items-center space-x-3">
                 <!-- Mobile Logo & Nama Aplikasi -->
                 <div class="flex items-center space-x-2.5 md:hidden">
-                    <img src="{{ asset('logo.png') }}" alt="Logo" class="w-7 h-7 object-contain">
+                    <img src="{{ \App\Models\Setting::getLogo() }}" alt="Logo" class="w-7 h-7 object-contain">
                     <div>
                         <h1 class="text-sm font-bold text-gray-900 leading-tight">SIPERFAS</h1>
                         <p class="text-[9px] text-gray-500 font-medium">Pelapor</p>
@@ -195,7 +195,7 @@
                                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                 <span>Pengaturan Akun</span>
                             </a>
-                            <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Apakah Anda yakin ingin keluar?');">
+                            <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full flex items-center space-x-2.5 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
@@ -1526,5 +1526,6 @@
             <span class="text-[10px] mt-1 tracking-tight">Pengaturan</span>
         </a>
     </nav>
+    @include('partials.logout-modal')
 </body>
 </html>

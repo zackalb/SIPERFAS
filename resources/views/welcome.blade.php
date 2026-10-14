@@ -18,7 +18,7 @@
         
         <!-- Icon & Header -->
         <div class="flex flex-col items-center text-center mb-8">
-            <img src="{{ asset('logo.png') }}" alt="Logo SIPERFAS" class="h-20 mb-5 object-contain">
+            <img src="{{ \App\Models\Setting::getLogo() }}" alt="Logo SIPERFAS" class="h-20 mb-5 object-contain">
             <h1 class="text-[22px] font-bold text-[#0B3A82] mb-2">Pilih Akses Masuk</h1>
             <p class="text-[13px] text-gray-500 max-w-[280px] leading-relaxed">
                 Silakan pilih peran untuk mensimulasikan alur pengguna yang berbeda.
